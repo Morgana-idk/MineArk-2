@@ -1,0 +1,12 @@
+CC = gcc
+CFLAGS = -Wall -Wextra -O2 -lraylib
+TARGET = server
+OBJECTS = server.c
+
+all:$(TARGET)
+
+$(TARGET) : $(OBJECTS)
+	 clear && make clean && $(CC) $(OBJECTS) -o $(TARGET) && ./$(TARGET)
+
+clean:
+	rm -f $(TARGET)
