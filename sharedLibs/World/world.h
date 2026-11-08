@@ -5,25 +5,25 @@
 
 typedef struct {
     int ID;
-    char *Name;
+    const char *Name;
     Vector3 Position;
     int chunkMom;
 } Block;
 
 typedef struct {
     Block *Blocks;
-    size_t Size;
+    int Size;
     int ChunkID;
 } Chunk;
 
 typedef struct {
     Chunk *Chunks;
-    size_t Size;
+    int Size;
 } World;
 
 World GenerateWorld();
 
-Chunk GenerateChunk(size_t ID);
+Chunk GenerateChunk(int ID);
 
 Block GenerateBlock(int ID, Vector3 Position, int ChunkMom);
 

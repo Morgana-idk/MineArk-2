@@ -6,19 +6,19 @@
 
 const char *GetBlockNameByID(int ID) {
     static const char names[3][20] = {"Air", "Dirt", "Grass"};
-    return *names[ID];
+    return names[ID];
 }
 
 Block GenerateBlock(int ID, Vector3 Position, int ChunkMom) {
     return (Block){
         ID,
-        *GetBlockNameByID(ID),
+        GetBlockNameByID(ID),
         Position,
         ChunkMom
     };
 }
 
-Chunk GenerateChunk(size_t ID) {
+Chunk GenerateChunk(int ID) {
     Chunk chunk = {0};
     chunk.Blocks = calloc(256, sizeof(Block));
     chunk.Size = 0;
