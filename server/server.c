@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <raylib.h>
 #include "../sharedLibs/World/world.h"
 #include "../sharedLibs/Memoria/memoria.h"
@@ -10,19 +9,40 @@
 int main() {
     const World world = GenerateWorld();
     int blocos = 0;
-    
-    for (int i = 0; i < world.Size; i++) blocos += world.Chunks[i].Size;
 
-    printf("Worlds: 1\nChunks: %d\nBlocks: %d", world.Size, blocos);
+    for (int i = 0; i < world.Size; i++) blocos += world.Chunks[i].Size;
+    char worldInfo[50];
+
+    snprintf(worldInfo, sizeof(worldInfo), "Worlds: 1\nChunks: %d\nBlocks: %d", world.Size, blocos);
+
+    Camera3D camera = {0};
+    camera.position = (Vector3){0, 0, 0};
+    camera.target = (Vector3){0, 0, 1};
+    camera.up = (Vector3){0, 1, 0};
+
+    camera.fovy = 90.0f;
+    camera.projection = CAMERA_FREE;
 
     InitWindow(screenW, screenH, "MineArk 2");
     SetTargetFPS(60);
 
     while (!WindowShouldClose()) {
         BeginDrawing();
-        ClearBackground(RAYWHITE);
+        ClearBackground(BLACK);
 
-        DrawText("Olá, raylib!", 280, 200, 30, DARKGRAY);
+        BeginMode3D(Camera3D camera);
+
+             DrawCube(
+                (Vector3){0, 0, 0},
+                2, 2, 2,
+                RED
+            );
+
+            DrawGrid(int 30, float 1)
+
+        EndMode3D();
+
+        DrawText(worldInfo, 50 / 2, 50 / 2, 24, WHITE);
 
         EndDrawing();
     }
