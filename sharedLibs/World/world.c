@@ -20,12 +20,12 @@ Block GenerateBlock(int ID, Vector3 Position, int ChunkMom) {
 
 Chunk GenerateChunk(int ID) {
     Chunk chunk = {0};
-    chunk.Blocks = calloc(256, sizeof(Block));
+    chunk.Blocks = calloc(290, sizeof(Block));
     chunk.Size = 0;
     chunk.ChunkID = ID;
 
-    for (int x = -8; x <= 8; x++) {
-        for (int z = -8; z <= 8; z++) {
+    for (int x = -8; x < 8; x++) {
+        for (int z = -8; z < 8; z++) {
             Block block = GenerateBlock(2, (Vector3){x, 0, z}, ID);
             chunk.Blocks[chunk.Size] = block;
             chunk.Size++;
