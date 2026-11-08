@@ -7,13 +7,13 @@
 #define screenH 450
 #define screenW 800
 
-int main() {q
+int main() {
     const World world = GenerateWorld();
     int blocos = 0;
     
-    for (int i = 0; i < world->Size; i++) blocos += world->Chunks[i].Size;
+    for (int i = 0; i < world.Size; i++) blocos += world.Chunks[i].Size;
 
-    printf("Worlds: 1\nChunks: %d\nBlocks: %d", world->Size, blocos);
+    printf("Worlds: 1\nChunks: %d\nBlocks: %d", world.Size, blocos);
 
     InitWindow(screenW, screenH, "MineArk 2");
     SetTargetFPS(60);

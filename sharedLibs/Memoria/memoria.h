@@ -2,6 +2,6 @@
 #define MEMORIA_H
 #include "../World/world.h"
 
-void limparMemoria(World *world);
+void limparMemoria(const World *world);
 
 #endif
