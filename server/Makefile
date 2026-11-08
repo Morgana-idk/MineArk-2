@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -O2 -lraylib
 TARGET = server
-OBJECTS = server.c ../sharedLibs/World/world.c
+OBJECTS = server.c ../sharedLibs/World/world.c ../sharedLibs/Memoria/memoria.c
 
 all:$(TARGET)
 
