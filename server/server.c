@@ -21,7 +21,7 @@ int main() {
     camera.up = (Vector3){0, 1, 0};
 
     camera.fovy = 90.0f;
-    camera.projection = CAMERA_FREE;
+    camera.projection = CAMERA_PERSPECTIVE;
 
     InitWindow(screenW, screenH, "MineArk 2");
     SetTargetFPS(60);
@@ -30,7 +30,8 @@ int main() {
         BeginDrawing();
         ClearBackground(BLACK);
 
-        BeginMode3D(Camera3D camera);
+        BeginMode3D(camera);
+            UpdateCamera(&camera, CAMERA_FREE);
 
              DrawCube(
                 (Vector3){0, 0, 0},
@@ -38,7 +39,7 @@ int main() {
                 RED
             );
 
-            DrawGrid(int 30, float 1)
+            DrawGrid(30, 1);
 
         EndMode3D();
 
