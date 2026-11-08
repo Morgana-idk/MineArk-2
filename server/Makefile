@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -O2 -lraylib
+CFLAGS = -Wall -Wextra -O2 -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 
 TARGET = server
 OBJECTS = server.c ../sharedLibs/World/world.c ../sharedLibs/Memoria/memoria.c
 
