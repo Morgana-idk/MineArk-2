@@ -23,10 +23,10 @@ typedef struct {
 
 World GenerateWorld();
 
-Chunk GenerateChunk();
+Chunk GenerateChunk(size_t ID);
 
-Block GenerateBlock(int ID);
+Block GenerateBlock(int ID, Vector3 Position, int ChunkMom);
 
-char *GetBlockNameByID(int ID);
+const char *GetBlockNameByID(int ID);
 
 #endif

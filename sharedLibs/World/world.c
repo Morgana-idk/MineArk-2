@@ -1,17 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <raylib.h>
+#include "world.h"
 
 
-char *GetBlockNameByID(int ID) {
-    char names[3][20] = {"Air", "Dirt", "Grass"};
-    return strnames[ID];
+const char *GetBlockNameByID(int ID) {
+    static const char names[3][20] = {"Air", "Dirt", "Grass"};
+    return *names[ID];
 }
 
 Block GenerateBlock(int ID, Vector3 Position, int ChunkMom) {
     return (Block){
         ID,
-        GetBlockNameByID(ID),
+        *GetBlockNameByID(ID),
         Position,
         ChunkMom
     };
@@ -23,10 +24,10 @@ Chunk GenerateChunk(size_t ID) {
     chunk.Size = 0;
     chunk.ChunkID = ID;
 
-    for (x = -8; x <= 8; x++) {
-        for (z = -8; z <= 8; z++) {
+    for (int x = -8; x <= 8; x++) {
+        for (int z = -8; z <= 8; z++) {
             Block block = GenerateBlock(2, (Vector3){x, 0, z}, ID);
-            chunk[chunk.Size] = block;
+            chunk.Blocks[chunk.Size] = block;
             chunk.Size++;
         }
     }
@@ -40,6 +41,7 @@ World GenerateWorld() {
     world.Size = 0;
 
     world.Chunks[0] = GenerateChunk(world.Size);
+    world.Size++;
 
     return world;
 }
