@@ -127,12 +127,12 @@ int main() {
             ClearBackground(BLACK);
             SetShaderValueMatrix(shadowShader, lightVPLoc, lightVP);
             SetShaderValue(shadowShader, GetShaderLocation(shadowShader, "viewPos"), &camera.position, SHADER_UNIFORM_VEC3);
-            rlEnableShader(shadowShader.id);
+            BeginShaderMode(shadowShader);
             rlActiveTextureSlot(textureSlot);
             rlEnableTexture(shadowMap.depth.id);
 
 
-        rlSetUniform(shadowMapLoc, &textureSlot, SHADER_UNIFORM_INT, 1);
+            rlSetUniform(shadowMapLoc, &textureSlot, SHADER_UNIFORM_INT, 1);
 
             BeginMode3D(camera);
 
@@ -143,6 +143,8 @@ int main() {
             EndMode3D();
 
             DrawText(worldInfo, 50 / 2, 50 / 2, 24, WHITE);
+
+            EndShaderMode();
 
         EndDrawing();
     }
