@@ -27,14 +27,8 @@ RenderTexture2D LoadShadowmapRenderTexture(int width, int height) {
         target.depth.format = 19;
         target.depth.mipmaps = 1;
 
-        rlFramebufferAttach(
-            target.id,
-            target.depth.id,
-            RL_ATTACHMENT_DEPTH,
-            RL_ATTACHMENT_TEXTURE2D,
-            0
-        );
-
+        rlFramebufferAttach(target.id,target.depth.id,RL_ATTACHMENT_DEPTH,RL_ATTACHMENT_TEXTURE2D,0);
+        printf("Framebuffer completo: %d\n", rlFramebufferComplete(target.id));
         rlDisableFramebuffer();
     }
 
@@ -92,6 +86,8 @@ int main() {
     lightCamera.fovy = 70;
 
     RenderTexture2D shadowMap = LoadShadowmapRenderTexture(SHADOWMAP_RESOLUTION, SHADOWMAP_RESOLUTION);
+    printf("Framebuffer ID: %u\n", shadowMap.id);
+    printf("Depth texture ID: %u\n", shadowMap.depth.id);
 
     int lightVPLoc = GetShaderLocation(shadowShader, "lightVP");
     int shadowMapLoc = GetShaderLocation(shadowShader, "shadowMap");
