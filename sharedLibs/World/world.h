@@ -14,6 +14,7 @@ typedef struct {
     Block *Blocks;
     int Size;
     int ChunkID;
+    Vector3 Position;
 } Chunk;
 
 typedef struct {
@@ -23,7 +24,7 @@ typedef struct {
 
 World GenerateWorld();
 
-Chunk GenerateChunk(int ID);
+Chunk GenerateChunk(int ID, Vector3 Position);
 
 Block GenerateBlock(int ID, Vector3 Position, int ChunkMom);
 

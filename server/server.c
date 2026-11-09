@@ -33,11 +33,14 @@ int main() {
         BeginMode3D(camera);
             UpdateCamera(&camera, CAMERA_FREE);
 
-             DrawCube(
-                (Vector3){0, 0, 0},
-                2, 2, 2,
-                RED
-            );
+            for (int i = 0; i < world.Size; i++) {
+                for (int j = 0; j < world.Chunks[i].Size; j++) {
+                    Block cube = world.Chunks[i].Blocks[j];
+                    if (cube.ID == 2) {
+                        DrawCube(cube.Position, 1, 1, 1, GREEN);
+                    }
+                }
+            }
 
             DrawGrid(30, 1);
 
