@@ -21,5 +21,14 @@ out vec4 finalColor;
 
 void main()
 {
-    finalColor = vec4(1.0, 0.0, 1.0, 1.0);
+    vec4 lightSpace = lightVP * vec4(fragPosition, 1.0);
+
+    lightSpace.xyz /= lightSpace.w;
+    lightSpace.xyz = lightSpace.xyz * 0.5 + 0.5;
+
+    vec3 projected = lightSpace.xyz;
+
+    float depthValue = texture(shadowMap, projected.xy).r;
+
+    finalColor = vec4(vec3(depthValue), 1.0);
 }
