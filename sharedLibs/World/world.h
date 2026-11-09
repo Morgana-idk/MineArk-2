@@ -30,4 +30,6 @@ Block GenerateBlock(int ID, Vector3 Position, int ChunkMom);
 
 const char *GetBlockNameByID(int ID);
 
+void DrawWorld(const World *world);
+
 #endif

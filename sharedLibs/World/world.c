@@ -59,3 +59,18 @@ World GenerateWorld() {
 
     return world;
 }
+
+void DrawWorld(const World *world) {
+
+    for (int i = 0; i < world->Size; i++) {
+        for (int j = 0; j < world->Chunks[i].Size; j++) {
+
+            Block cube = world->Chunks[i].Blocks[j];
+
+            if (cube.ID == 2) {
+                DrawCube(cube.Position, 1, 1, 1, GREEN);
+            }
+        }
+    }
+
+}
