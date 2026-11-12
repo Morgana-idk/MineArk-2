@@ -28,7 +28,7 @@ int main() {
     SetTargetFPS(60);
 
     Shader lighthing = LoadShader("shaders/glsl330/lighting.vs", "shaders/glsl330/lighting.fs");
-    Vector3 lightDir = (Vector3){0.5f, 1.0f, 0.3f};
+    Vector3 lightDir = (Vector3){0, 5, 0};
 
     int lightDirLoc = GetShaderLocation(lighthing, "lightDir");
 
@@ -43,6 +43,9 @@ int main() {
 
             BeginShaderMode(lighthing);
                 DrawWorld(&world);
+                DrawCube((Vector3){0, 2, 0}, 1, 1, 1, GREEN);
+                DrawCube((Vector3){0, 4, 0}, 1, 1, 1, GREEN);
+
 
             EndShaderMode();
 
