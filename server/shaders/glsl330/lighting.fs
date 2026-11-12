@@ -9,7 +9,7 @@ uniform int shadow;
 out vec4 finalColor;
 
 void main() {
-    float diffuse = max(dot(normalize(fragNormal), normalize(lightDir)), 0);
+    float diffuse = max(dot(normalize(fragNormal), normalize(lightDir)), 0.0);
 
     float ambient = 0.1;
 

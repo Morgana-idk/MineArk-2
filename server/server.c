@@ -36,12 +36,13 @@ int main() {
 
     Shader lighthing = LoadShader("shaders/glsl330/lighting.vs", "shaders/glsl330/lighting.fs");
     Vector3 lightDir = (Vector3){0, 1, 0};
+    int shadow = 0;
 
     int lightDirLoc = GetShaderLocation(lighthing, "lightDir");
     int shadowLoc = GetShaderLocation(lighthing, "shadow");
 
     SetShaderValue(lighthing, lightDirLoc, &lightDir, SHADER_UNIFORM_VEC3);
-    SetShaderValue(lighthing, shadowLoc, 0, SHADER_UNIFORM_INT);
+    SetShaderValue(lighthing, shadowLoc, &shadow, SHADER_UNIFORM_INT);
 
     IsBlocksShadowed(&world);
 

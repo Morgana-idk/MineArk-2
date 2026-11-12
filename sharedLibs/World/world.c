@@ -63,6 +63,9 @@ World GenerateWorld() {
 }
 
 void DrawWorld(const World *world, Shader *Shader) {
+    int shadowLoc = GetShaderLocation(*Shader, "shadow");
+    int shadow = 1;
+    int unshadow = 0;
 
     for (int i = 0; i < world->Size; i++) {
         for (int j = 0; j < world->Chunks[i].Size; j++) {
@@ -74,11 +77,19 @@ void DrawWorld(const World *world, Shader *Shader) {
                     DrawCube(cube.Position, 1, 1, 1, GREEN);
                 } else {
                     EndShaderMode();
-                    int shadowLoc = GetShaderLocation(*Shader, "shadow");
-                    SetShaderValue(*Shader, shadowLoc, 0, SHADER_UNIFORM_INT);
+
+                    SetShaderValue(*Shader, shadowLoc, &shadow, SHADER_UNIFORM_INT);
 
                     BeginShaderMode(*Shader);
+
                     DrawCube(cube.Position, 1, 1, 1, GREEN);
+
+                    EndShaderMode();
+
+                    SetShaderValue(*Shader, shadowLoc, &unshadow, SHADER_UNIFORM_INT);
+
+                    BeginShaderMode(*Shader);
+
                 }
             }
         }
