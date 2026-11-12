@@ -1,6 +1,5 @@
 #include "memoria.h"
 #include <raylib.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include "../World/world.h"
 #include <stdnoreturn.h>
@@ -29,7 +28,7 @@ AtlasInfo LoadResources() {
     int posX = 0, posY = 0, tile = 16;
 
     char *texturesLoc[ACTUAL_TEXTURES] = {
-        "../../Assets/Textures/Blocks/Grass/grass.png"
+        "../Assets/Textures/Blocks/Grass/grass.png"
     };
 
     for (int i = 0; i < ACTUAL_TEXTURES; i++) {
