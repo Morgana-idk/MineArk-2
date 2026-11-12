@@ -16,10 +16,7 @@ void limparMemoria(const World *world) {
 }
 
 AtlasInfo BuildAtlas() {
-    return (AtlasInfo){
-        (Model){0},
-        (Rectangle){0}
-    };
+    return (AtlasInfo){0};
 }
 
 AtlasInfo LoadResources() {
@@ -58,6 +55,8 @@ AtlasInfo LoadResources() {
     }
 
     UnloadImage(atlasImagem);
+
+    AtlasCarregado = true;
 
     return Atlas;
 }
