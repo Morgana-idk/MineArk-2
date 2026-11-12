@@ -70,12 +70,15 @@ void DrawWorld(const World *world, Shader *Shader) {
             Block cube = world->Chunks[i].Blocks[j];
 
             if (cube.ID == 2) {
-                if (!cube.IsShadowed) {
+                if (!cube.ShadowedFaces.Top) {
                     DrawCube(cube.Position, 1, 1, 1, GREEN);
                 } else {
                     EndShaderMode();
-                        DrawCube(cube.Position, 1, 1, 1, (Color){10, 60, 10, 255});
+                    int shadowLoc = GetShaderLocation(*Shader, "shadow");
+                    SetShaderValue(*Shader, shadowLoc, 0, SHADER_UNIFORM_INT);
+
                     BeginShaderMode(*Shader);
+                    DrawCube(cube.Position, 1, 1, 1, GREEN);
                 }
             }
         }
