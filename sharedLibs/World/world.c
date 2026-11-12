@@ -112,43 +112,31 @@ void IsBlocksShadowed(const World *world, Vector3 lightDir) {
                         if (lightDir.x > 0) {
                             if (otherP.x > actualP.x && otherP.y == actualP.y && otherP.z == actualP.z) {
                                 actualBlock->ShadowedFaces.Right = true;
-                            } else {
-                                actualBlock->ShadowedFaces.Right = false;
                             }
                         }
                         if (lightDir.x < 0) {
                             if (otherP.x < actualP.x && otherP.y == actualP.y && otherP.z == actualP.z) {
                                 actualBlock->ShadowedFaces.Left = true;
-                            } else {
-                                actualBlock->ShadowedFaces.Left = false;
                             }
                         }
                         if (lightDir.y > 0) {
                             if (otherP.y > actualP.y && otherP.x == actualP.x && otherP.z == actualP.z) {
                                 actualBlock->ShadowedFaces.Top = true;
-                            } else {
-                                actualBlock->ShadowedFaces.Top = false;
                             }
                         }
                         if (lightDir.y < 0) {
                             if (otherP.y < actualP.y && otherP.x == actualP.x && otherP.z == actualP.z) {
                                 actualBlock->ShadowedFaces.Bottom = true;
-                            } else {
-                                actualBlock->ShadowedFaces.Bottom = false;
                             }
                         }
                         if (lightDir.z > 0) {
                             if (otherP.z > actualP.z && otherP.y == actualP.y && otherP.x == actualP.x) {
                                 actualBlock->ShadowedFaces.Front = true;
-                            } else {
-                                actualBlock->ShadowedFaces.Front = false;
                             }
                         }
                         if (lightDir.z < 0) {
                             if (otherP.z < actualP.z && otherP.y == actualP.y && otherP.x == actualP.x) {
-                                actualBlock->ShadowedFaces.Bottom = true;
-                            } else {
-                                actualBlock->ShadowedFaces.Bottom = false;
+                                actualBlock->ShadowedFaces.Back = true;
                             }
                         }
                     }
