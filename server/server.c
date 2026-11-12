@@ -1,8 +1,10 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <raymath.h>
 #include <raylib.h>
 #include "../sharedLibs/World/world.h"
 #include "../sharedLibs/Memoria/memoria.h"
+#include "../sharedLibs/Raycast/raycast.h"
 
 #define screenH 450
 #define screenW 800
@@ -33,13 +35,15 @@ int main() {
     SetTargetFPS(60);
 
     Shader lighthing = LoadShader("shaders/glsl330/lighting.vs", "shaders/glsl330/lighting.fs");
-    Vector3 lightDir = (Vector3){0, 5, 0};
+    Vector3 lightDir = (Vector3){0, 1, 0};
 
     int lightDirLoc = GetShaderLocation(lighthing, "lightDir");
 
     SetShaderValue(lighthing, lightDirLoc, &lightDir, SHADER_UNIFORM_VEC3);
 
     IsBlocksShadowed(&world);
+
+    Raycast((Vector3){7, 4, 0}, (Vector3){-1, 0, 0}, 7, &world, true);
 
     while (!WindowShouldClose()) {
         BeginDrawing();
