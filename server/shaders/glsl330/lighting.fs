@@ -24,7 +24,7 @@ void main() {
 
     float diffuse = max(dot(normalize(fragNormal), normalize(lightDir)), -0.065);
 
-    float ambient = 0.2;
+    float ambient = 0.3f;
 
     if (fragNormal.y > 0.9) shadowed = shadowTop == 1;
     if (fragNormal.y < -0.9) shadowed = shadowBottom == 1;

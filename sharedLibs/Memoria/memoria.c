@@ -4,7 +4,7 @@
 #include "../World/world.h"
 #include <stdnoreturn.h>
 
-#define ACTUAL_TEXTURES 1
+#define ACTUAL_TEXTURES 2
 
 bool AtlasCarregado = false;
 
@@ -28,7 +28,8 @@ AtlasInfo LoadResources() {
     int posX = 0, posY = 0, tile = 16;
 
     char *texturesLoc[ACTUAL_TEXTURES] = {
-        "../Assets/Textures/Blocks/Grass/grass.png"
+        "../Assets/Textures/Blocks/Grass/grass.png",
+        "../Assets/Textures/Blocks/Dirt/dirt.png"
     };
 
     for (int i = 0; i < ACTUAL_TEXTURES; i++) {

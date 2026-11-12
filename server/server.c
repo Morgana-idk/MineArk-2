@@ -11,9 +11,9 @@
 
 int main() {
     const World world = GenerateWorld();
-    world.Chunks[0].Blocks[world.Chunks[0].Size] = GenerateBlock(2, (Vector3){0, 2, 0}, 0);
+    world.Chunks[0].Blocks[world.Chunks[0].Size] = GenerateBlock(1, (Vector3){0, 2, 0}, 0);
     world.Chunks[0].Size++;
-    world.Chunks[0].Blocks[world.Chunks[0].Size] = GenerateBlock(2, (Vector3){0, 4, 0}, 0);
+    world.Chunks[0].Blocks[world.Chunks[0].Size] = GenerateBlock(1, (Vector3){0, 4, 0}, 0);
     world.Chunks[0].Size++;
 
     int blocos = 0;
@@ -37,7 +37,12 @@ int main() {
     AtlasInfo TextureAtlas = LoadResources();
 
     Shader lighthing = LoadShader("shaders/glsl330/lighting.vs", "shaders/glsl330/lighting.fs");
-    Vector3 lightDir = (Vector3){1, 0, 0};
+
+    for (int i = 0; i < ACTUAL_TEXTURES; i++) {
+        TextureAtlas.Models[i].materials[0].shader = lighthing;
+    }
+
+    Vector3 lightDir = (Vector3){0, 1, 0};
 
     int lightDirLoc = GetShaderLocation(lighthing, "lightDir");
 
@@ -50,7 +55,7 @@ int main() {
 
     while (!WindowShouldClose()) {
         BeginDrawing();
-        ClearBackground(BLACK);
+        ClearBackground((Color){120, 167, 255, 255});
 
         BeginMode3D(camera);
             UpdateCamera(&camera, CAMERA_FREE);

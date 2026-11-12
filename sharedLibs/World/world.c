@@ -7,7 +7,7 @@
 
 
 const char *GetBlockNameByID(int ID) {
-    static const char names[3][20] = {"Air", "Dirt", "Grass"};
+    static const char names[3][20] = {"Grass", "Dirt"};
     return names[ID];
 }
 
@@ -17,7 +17,8 @@ Block GenerateBlock(int ID, Vector3 Position, int ChunkMom) {
         GetBlockNameByID(ID),
         Position,
         ChunkMom,
-        (ShadowedFaces){0}
+        (ShadowedFaces){0},
+        false
     };
 }
 
@@ -32,7 +33,7 @@ Chunk GenerateChunk(int ID, Vector3 Position) {
         for (int z = -8; z < 8; z++) {
             Vector3 finalPosition = Vector3Add((Vector3){x, 0, z}, Position);
 
-            Block block = GenerateBlock(2, finalPosition, ID);
+            Block block = GenerateBlock(0, finalPosition, ID);
             chunk.Blocks[chunk.Size] = block;
             chunk.Size++;
         }
@@ -78,7 +79,7 @@ void DrawWorld(const World *world, Shader *Shader, AtlasInfo *TextureAtlas) {
 
             Block cube = world->Chunks[i].Blocks[j];
 
-            if (cube.ID != 0) {
+            if (!cube.IsAir) {
                 SetShaderValue(*Shader, shadowTopLoc, &cube.ShadowedFaces.Top, SHADER_UNIFORM_INT);
                 SetShaderValue(*Shader, shadowBottomLoc, &cube.ShadowedFaces.Bottom, SHADER_UNIFORM_INT);
                 SetShaderValue(*Shader, shadowRightLoc, &cube.ShadowedFaces.Right, SHADER_UNIFORM_INT);
@@ -87,7 +88,7 @@ void DrawWorld(const World *world, Shader *Shader, AtlasInfo *TextureAtlas) {
                 SetShaderValue(*Shader, shadowBackLoc, &cube.ShadowedFaces.Back, SHADER_UNIFORM_INT);
 
                 BeginShaderMode(*Shader);
-                    DrawModel(TextureAtlas->Models[cube.ID - 2], cube.Position, 1, WHITE);
+                    DrawModel(TextureAtlas->Models[cube.ID], cube.Position, 1, WHITE);
                 EndShaderMode();
             }
         }
@@ -109,32 +110,32 @@ void IsBlocksShadowed(const World *world, Vector3 lightDir) {
                     if (other.ID != 0) {
                         if (lightDir.x > 0) {
                             if (otherP.x > actualP.x && otherP.y == actualP.y && otherP.z == actualP.z) {
-                                actualBlock->ShadowedFaces.Right = true;
+                                actualBlock->ShadowedFaces.Right = 1;
                             }
                         }
                         if (lightDir.x < 0) {
                             if (otherP.x < actualP.x && otherP.y == actualP.y && otherP.z == actualP.z) {
-                                actualBlock->ShadowedFaces.Left = true;
+                                actualBlock->ShadowedFaces.Left = 1;
                             }
                         }
                         if (lightDir.y > 0) {
                             if (otherP.y > actualP.y && otherP.x == actualP.x && otherP.z == actualP.z) {
-                                actualBlock->ShadowedFaces.Top = true;
+                                actualBlock->ShadowedFaces.Top = 1;
                             }
                         }
                         if (lightDir.y < 0) {
                             if (otherP.y < actualP.y && otherP.x == actualP.x && otherP.z == actualP.z) {
-                                actualBlock->ShadowedFaces.Bottom = true;
+                                actualBlock->ShadowedFaces.Bottom = 1;
                             }
                         }
                         if (lightDir.z > 0) {
                             if (otherP.z > actualP.z && otherP.y == actualP.y && otherP.x == actualP.x) {
-                                actualBlock->ShadowedFaces.Front = true;
+                                actualBlock->ShadowedFaces.Front = 1;
                             }
                         }
                         if (lightDir.z < 0) {
                             if (otherP.z < actualP.z && otherP.y == actualP.y && otherP.x == actualP.x) {
-                                actualBlock->ShadowedFaces.Back = true;
+                                actualBlock->ShadowedFaces.Back = 1;
                             }
                         }
                     }
@@ -146,27 +147,16 @@ void IsBlocksShadowed(const World *world, Vector3 lightDir) {
 }
 
 
-/*  else {
-                    EndShaderMode();
+Block *GetBlockProperties(const World *world, Vector3 Position) {
+    for (int i = 0; i < world->Size; i++) {
+        for (int j = 0; j < world->Chunks[i].Size; j++) {
+            if (Vector3Equals(world->Chunks[i].Blocks[j].Position, Position) == 1) {
+                return &world->Chunks[i].Blocks[j];
+            }
+        }
+    }
 
-                    SetShaderValue(*Shader, shadowLoc, &shadow, SHADER_UNIFORM_INT);
+    Block Air = (Block){-1, "", {0}, -1, {0}, true};
 
-                    BeginShaderMode(*Shader);
-
-                    DrawCube(cube.Position, 1, 1, 1, GREEN);
-
-                    EndShaderMode();
-
-                    SetShaderValue(*Shader, shadowLoc, &unshadow, SHADER_UNIFORM_INT);
-
-                    BeginShaderMode(*Shader);
-
-                }
-                    
-                
-if (!cube.ShadowedFaces.Top && !cube.ShadowedFaces.Bottom && !cube.ShadowedFaces.Left && !cube.ShadowedFaces.Right && !cube.ShadowedFaces.Front && !cube.ShadowedFaces.Back) {
-                    DrawCube(cube.Position, 1, 1, 1, GREEN);
-                }
-                
-                
-*/
+    return &Air;
+}

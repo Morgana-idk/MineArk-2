@@ -1,7 +1,7 @@
 #ifndef MEMORIA_H
 #define MEMORIA_H
 
-#define ACTUAL_TEXTURES 1
+#define ACTUAL_TEXTURES 2
 
 #include <raylib.h>
 

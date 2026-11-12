@@ -7,12 +7,12 @@
 #include "../Memoria/memoria.h"
 
 typedef  struct {
-    bool Top;
-    bool Bottom;
-    bool Right;
-    bool Left;
-    bool Front;
-    bool Back;
+    int Top;
+    int Bottom;
+    int Right;
+    int Left;
+    int Front;
+    int Back;
 } ShadowedFaces;
 
 typedef struct {
@@ -21,6 +21,7 @@ typedef struct {
     Vector3 Position;
     int chunkMom;
     ShadowedFaces ShadowedFaces;
+    bool IsAir;
 } Block;
 
 typedef struct {
@@ -46,5 +47,7 @@ const char *GetBlockNameByID(int ID);
 void DrawWorld(const World *world, Shader *Shader, AtlasInfo *TextureAtlas);
 
 void IsBlocksShadowed(const World *world, Vector3 lightDir);
+
+Block *GetBlockProperties(const World *world, Vector3 Position);
 
 #endif
