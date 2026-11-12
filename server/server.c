@@ -39,11 +39,11 @@ int main() {
 
     SetShaderValue(lighthing, lightDirLoc, &lightDir, SHADER_UNIFORM_VEC3);
 
+    IsBlocksShadowed(&world);
+
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
-
-        IsBlocksShadowed(&world);
 
         BeginMode3D(camera);
             UpdateCamera(&camera, CAMERA_FREE);
