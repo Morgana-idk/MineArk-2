@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <raymath.h>
 #include <raylib.h>
 #include "../sharedLibs/World/world.h"
 #include "../sharedLibs/Memoria/memoria.h"
@@ -26,6 +27,13 @@ int main() {
     InitWindow(screenW, screenH, "MineArk 2");
     SetTargetFPS(60);
 
+    Shader lighthing = LoadShader("shaders/glsl330/lighting.vs", "shaders/glsl330/lighting.fs");
+    Vector3 lightDir = (Vector3){0.5f, 1.0f, 0.3f};
+
+    int lightDirLoc = GetShaderLocation(lighthing, "lightDir");
+
+    SetShaderValue(lighthing, lightDirLoc, &lightDir, SHADER_UNIFORM_VEC3);
+
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
@@ -33,7 +41,10 @@ int main() {
         BeginMode3D(camera);
             UpdateCamera(&camera, CAMERA_FREE);
 
-            DrawWorld(&world);
+            BeginShaderMode(lighthing);
+                DrawWorld(&world);
+
+            EndShaderMode();
 
             DrawGrid(30, 1);
 
@@ -46,6 +57,7 @@ int main() {
 
     CloseWindow();
 
+    UnloadShader(lighthing);
     limparMemoria(&world);
 
     return 0;
