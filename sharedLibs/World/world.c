@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdlib.h>
 #include <raylib.h>
 #include "world.h"
@@ -15,7 +16,7 @@ Block GenerateBlock(int ID, Vector3 Position, int ChunkMom) {
         GetBlockNameByID(ID),
         Position,
         ChunkMom,
-        false
+        (ShadowedFaces){0}
     };
 }
 
@@ -86,22 +87,18 @@ void IsBlocksShadowed(const World *world) {
     for (int k = 0; k < world->Size; k++) {
         for (int r = 0; r < world->Chunks[k].Size; r++) {
             Block *actualBlock = &world->Chunks[k].Blocks[r];
-            bool isShadow = false;
 
             for (int i = 0; i < world->Size; i++) {
                 for (int j = 0; j < world->Chunks[i].Size; j++) {
                     Block other = world->Chunks[i].Blocks[j];
 
                     if (other.ID != 0 && other.Position.x == actualBlock->Position.x && other.Position.z == actualBlock->Position.z && other.Position.y > actualBlock->Position.y) {
-                        isShadow = true;
-                        break;
+                        actualBlock->ShadowedFaces.Top = true;
+                        return;
                     }
                 }
 
-                if (isShadow) break;
             }
-
-            actualBlock->IsShadowed = isShadow;
         }
     }
 }

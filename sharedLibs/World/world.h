@@ -5,12 +5,21 @@
 #include <raymath.h>
 #include <stdbool.h>
 
+typedef  struct {
+    bool Top;
+    bool Bottom;
+    bool Right;
+    bool Left;
+    bool Front;
+    bool Back;
+} ShadowedFaces;
+
 typedef struct {
     int ID;
     const char *Name;
     Vector3 Position;
     int chunkMom;
-    bool IsShadowed;
+    ShadowedFaces ShadowedFaces;
 } Block;
 
 typedef struct {
