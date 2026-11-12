@@ -14,7 +14,8 @@ Block GenerateBlock(int ID, Vector3 Position, int ChunkMom) {
         ID,
         GetBlockNameByID(ID),
         Position,
-        ChunkMom
+        ChunkMom,
+        false
     };
 }
 
@@ -60,7 +61,7 @@ World GenerateWorld() {
     return world;
 }
 
-void DrawWorld(const World *world) {
+void DrawWorld(const World *world, Shader *Shader) {
 
     for (int i = 0; i < world->Size; i++) {
         for (int j = 0; j < world->Chunks[i].Size; j++) {
@@ -68,9 +69,39 @@ void DrawWorld(const World *world) {
             Block cube = world->Chunks[i].Blocks[j];
 
             if (cube.ID == 2) {
-                DrawCube(cube.Position, 1, 1, 1, GREEN);
+                if (!cube.IsShadowed) {
+                    DrawCube(cube.Position, 1, 1, 1, GREEN);
+                } else {
+                    EndShaderMode();
+                        DrawCube(cube.Position, 1, 1, 1, (Color){100, 200, 100, 0});
+                    BeginShaderMode(*Shader);
+                }
             }
         }
     }
 
+}
+
+void IsBlockShadowed(const World *world) {
+    for (int k = 0; k < world->Size; k++) {
+        for (int r = 0; r < world->Chunks[k].Size; r++) {
+            Block actualBlock = world->Chunks[k].Blocks[r];
+            bool isShadow = false;
+
+            for (int i = 0; i < world->Size; i++) {
+                for (int j = 0; j < world->Chunks[i].Size; j++) {
+                    Block other = world->Chunks[i].Blocks[j];
+
+                    if (other.ID != 0 && other.Position.x == actualBlock.Position.x && other.Position.z == actualBlock.Position.z && other.Position.y > actualBlock.Position.y) {
+                        isShadow = true;
+                        break;
+                    }
+                }
+
+                if (isShadow) break;
+            }
+
+            actualBlock.IsShadowed = isShadow;
+        }
+    }
 }

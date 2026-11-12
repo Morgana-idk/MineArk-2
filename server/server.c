@@ -9,6 +9,11 @@
 
 int main() {
     const World world = GenerateWorld();
+    world.Chunks[0].Blocks[world.Chunks[0].Size] = GenerateBlock(2, (Vector3){0, 2, 0}, 0);
+    world.Chunks[0].Size++;
+    world.Chunks[0].Blocks[world.Chunks[0].Size] = GenerateBlock(2, (Vector3){0, 4, 0}, 0);
+    world.Chunks[0].Size++;
+
     int blocos = 0;
 
     for (int i = 0; i < world.Size; i++) blocos += world.Chunks[i].Size;
@@ -38,14 +43,14 @@ int main() {
         BeginDrawing();
         ClearBackground(BLACK);
 
+        IsBlocksShadowed(&world);
+
         BeginMode3D(camera);
             UpdateCamera(&camera, CAMERA_FREE);
 
             BeginShaderMode(lighthing);
-                DrawWorld(&world);
-                DrawCube((Vector3){0, 2, 0}, 1, 1, 1, GREEN);
-                DrawCube((Vector3){0, 4, 0}, 1, 1, 1, GREEN);
 
+                DrawWorld(&world, &lighthing);
 
             EndShaderMode();
 
