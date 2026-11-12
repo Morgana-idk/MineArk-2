@@ -44,6 +44,6 @@ const char *GetBlockNameByID(int ID);
 
 void DrawWorld(const World *world, Shader *Shader);
 
-void IsBlocksShadowed(const World *world);
+void IsBlocksShadowed(const World *world, Vector3 lightDir);
 
 #endif

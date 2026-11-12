@@ -73,7 +73,7 @@ void DrawWorld(const World *world, Shader *Shader) {
             Block cube = world->Chunks[i].Blocks[j];
 
             if (cube.ID == 2) {
-                if (!cube.ShadowedFaces.Top) {
+                if (!cube.ShadowedFaces.Top && !cube.ShadowedFaces.Bottom && !cube.ShadowedFaces.Left && !cube.ShadowedFaces.Right && !cube.ShadowedFaces.Front && !cube.ShadowedFaces.Back) {
                     DrawCube(cube.Position, 1, 1, 1, GREEN);
                 } else {
                     EndShaderMode();
@@ -97,18 +97,60 @@ void DrawWorld(const World *world, Shader *Shader) {
 
 }
 
-void IsBlocksShadowed(const World *world) {
+void IsBlocksShadowed(const World *world, Vector3 lightDir) {
     for (int k = 0; k < world->Size; k++) {
         for (int r = 0; r < world->Chunks[k].Size; r++) {
             Block *actualBlock = &world->Chunks[k].Blocks[r];
+            Vector3 actualP = actualBlock->Position;
 
             for (int i = 0; i < world->Size; i++) {
                 for (int j = 0; j < world->Chunks[i].Size; j++) {
                     Block other = world->Chunks[i].Blocks[j];
+                    Vector3 otherP = other.Position;
 
-                    if (other.ID != 0 && other.Position.x == actualBlock->Position.x && other.Position.z == actualBlock->Position.z && other.Position.y > actualBlock->Position.y) {
-                        actualBlock->ShadowedFaces.Top = true;
-                        return;
+                    if (other.ID != 0) {
+                        if (lightDir.x > 0) {
+                            if (otherP.x > actualP.x && otherP.y == actualP.y && otherP.z == actualP.z) {
+                                actualBlock->ShadowedFaces.Right = true;
+                            } else {
+                                actualBlock->ShadowedFaces.Right = false;
+                            }
+                        }
+                        if (lightDir.x < 0) {
+                            if (otherP.x < actualP.x && otherP.y == actualP.y && otherP.z == actualP.z) {
+                                actualBlock->ShadowedFaces.Left = true;
+                            } else {
+                                actualBlock->ShadowedFaces.Left = false;
+                            }
+                        }
+                        if (lightDir.y > 0) {
+                            if (otherP.y > actualP.y && otherP.x == actualP.x && otherP.z == actualP.z) {
+                                actualBlock->ShadowedFaces.Top = true;
+                            } else {
+                                actualBlock->ShadowedFaces.Top = false;
+                            }
+                        }
+                        if (lightDir.y < 0) {
+                            if (otherP.y < actualP.y && otherP.x == actualP.x && otherP.z == actualP.z) {
+                                actualBlock->ShadowedFaces.Bottom = true;
+                            } else {
+                                actualBlock->ShadowedFaces.Bottom = false;
+                            }
+                        }
+                        if (lightDir.z > 0) {
+                            if (otherP.z > actualP.z && otherP.y == actualP.y && otherP.x == actualP.x) {
+                                actualBlock->ShadowedFaces.Front = true;
+                            } else {
+                                actualBlock->ShadowedFaces.Front = false;
+                            }
+                        }
+                        if (lightDir.z < 0) {
+                            if (otherP.z < actualP.z && otherP.y == actualP.y && otherP.x == actualP.x) {
+                                actualBlock->ShadowedFaces.Bottom = true;
+                            } else {
+                                actualBlock->ShadowedFaces.Bottom = false;
+                            }
+                        }
                     }
                 }
 

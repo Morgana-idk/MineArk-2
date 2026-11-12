@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
-#include <raymath.h>
 #include <raylib.h>
+#include <raymath.h>
 #include "../sharedLibs/World/world.h"
 #include "../sharedLibs/Memoria/memoria.h"
 #include "../sharedLibs/Raycast/raycast.h"
@@ -44,7 +44,7 @@ int main() {
     SetShaderValue(lighthing, lightDirLoc, &lightDir, SHADER_UNIFORM_VEC3);
     SetShaderValue(lighthing, shadowLoc, &shadow, SHADER_UNIFORM_INT);
 
-    IsBlocksShadowed(&world);
+    IsBlocksShadowed(&world, lightDir);
 
     Raycast((Vector3){7, 4, 0}, (Vector3){-1, 0, 0}, 7, &world, true);
 
