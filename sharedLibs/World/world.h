@@ -30,7 +30,7 @@ typedef struct {
     Vector3 Position;
 } Chunk;
 
-typedef struct {
+typedef struct World {
     Chunk *Chunks;
     int Size;
 } World;

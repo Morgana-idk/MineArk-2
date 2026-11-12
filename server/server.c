@@ -38,7 +38,6 @@ int main() {
 
     Shader lighthing = LoadShader("shaders/glsl330/lighting.vs", "shaders/glsl330/lighting.fs");
     Vector3 lightDir = (Vector3){1, 0, 0};
-    int shadow = 0;
 
     int lightDirLoc = GetShaderLocation(lighthing, "lightDir");
 

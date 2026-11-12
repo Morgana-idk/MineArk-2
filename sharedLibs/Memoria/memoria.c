@@ -2,6 +2,7 @@
 #include <raylib.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "../World/world.h"
 #include <stdnoreturn.h>
 
 #define ACTUAL_TEXTURES 1

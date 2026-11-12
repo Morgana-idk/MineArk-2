@@ -87,7 +87,7 @@ void DrawWorld(const World *world, Shader *Shader, AtlasInfo *TextureAtlas) {
                 SetShaderValue(*Shader, shadowBackLoc, &cube.ShadowedFaces.Back, SHADER_UNIFORM_INT);
 
                 BeginShaderMode(*Shader);
-                    DrawCube(cube.Position, 1, 1, 1, GREEN);
+                    DrawModel(TextureAtlas->Models[cube.ID - 1], cube.Position, 1, WHITE);
                 EndShaderMode();
             }
         }

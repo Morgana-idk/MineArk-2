@@ -4,7 +4,8 @@
 #define ACTUAL_TEXTURES 1
 
 #include <raylib.h>
-#include "../World/world.h"
+
+typedef struct World World;
 
 typedef struct {
     Model Models[ACTUAL_TEXTURES];
