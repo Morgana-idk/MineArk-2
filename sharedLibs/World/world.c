@@ -156,7 +156,7 @@ Block *GetBlockProperties(const World *world, Vector3 Position) {
         }
     }
 
-    Block Air = (Block){-1, "", {0}, -1, {0}, true};
+    static Block Air = (Block){-1, "", {0}, -1, {0}, true};
 
     return &Air;
 }
