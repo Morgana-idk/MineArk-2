@@ -14,7 +14,7 @@ void main() {
 
     float brightness = ambient + diffuse;
 
-    vec3 finalRGB = colDiffuse.rgb * brightness;
+    vec3 finalRGB = fragColor.rgb * brightness;
 
     finalColor = vec4(clamp(finalRGB, 0, 1), fragColor.a);
 }

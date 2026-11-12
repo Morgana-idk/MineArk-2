@@ -2,7 +2,7 @@
 
 in vec3 vertexPosition;
 in vec3 vertexNormal;
-in vec3 vertexColor;
+in vec4 vertexColor;
 
 uniform mat4 mvp;
 uniform mat4 matNormal;
