@@ -4,7 +4,15 @@ in vec3 fragNormal;
 in vec4 fragColor;
 
 uniform vec3 lightDir;
-uniform int shadow;
+
+uniform int shadowTop;
+uniform int shadowBottom;
+uniform int shadowRight;
+uniform int shadowLeft;
+uniform int shadowFront;
+uniform int shadowBack;
+
+bool shadowed = false;
 
 out vec4 finalColor;
 
@@ -13,8 +21,18 @@ void main() {
 
     float ambient = 0.2;
 
+    if (fragNormal.y > 0.9) shadowed = shadowTop == 1;
+    if (fragNormal.y < -0.9) shadowed = shadowBottom == 1;
+
+    if (fragNormal.x > 0.9) shadowed = shadowRight == 1;
+    if (fragNormal.x < -0.9) shadowed = shadowLeft == 1;
+    
+    if (fragNormal.z > 0.9) shadowed = shadowFront == 1;
+    if (fragNormal.z < -0.9) shadowed = shadowBack == 1;
+
     float brightness;
-    if (shadow == 0) {
+
+    if (!shadowed) {
         brightness = ambient + diffuse;
     } else {
         brightness = ambient;

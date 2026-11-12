@@ -4,6 +4,7 @@
 #include <raylib.h>
 #include <raymath.h>
 #include <stdbool.h>
+#include "../Memoria/memoria.h"
 
 typedef  struct {
     bool Top;
@@ -42,7 +43,7 @@ Block GenerateBlock(int ID, Vector3 Position, int ChunkMom);
 
 const char *GetBlockNameByID(int ID);
 
-void DrawWorld(const World *world, Shader *Shader);
+void DrawWorld(const World *world, Shader *Shader, AtlasInfo *TextureAtlas);
 
 void IsBlocksShadowed(const World *world, Vector3 lightDir);
 

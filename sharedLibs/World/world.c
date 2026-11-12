@@ -1,7 +1,8 @@
 #include <stdbool.h>
+#include "world.h"
+#include "../Memoria/memoria.h"
 #include <stdlib.h>
 #include <raylib.h>
-#include "world.h"
 #include <raymath.h>
 
 
@@ -62,35 +63,32 @@ World GenerateWorld() {
     return world;
 }
 
-void DrawWorld(const World *world, Shader *Shader) {
-    int shadowLoc = GetShaderLocation(*Shader, "shadow");
-    int shadow = 1;
-    int unshadow = 0;
+void DrawWorld(const World *world, Shader *Shader, AtlasInfo *TextureAtlas) {
+
+    int shadowTopLoc = GetShaderLocation(*Shader, "shadowTop");
+    int shadowBottomLoc = GetShaderLocation(*Shader, "shadowBottom");
+    int shadowRightLoc = GetShaderLocation(*Shader, "shadowRight");
+    int shadowLeftLoc = GetShaderLocation(*Shader, "shadowLeft");
+    int shadowFrontLoc = GetShaderLocation(*Shader, "shadowFront");
+    int shadowBackLoc = GetShaderLocation(*Shader, "shadowBack");
+
 
     for (int i = 0; i < world->Size; i++) {
         for (int j = 0; j < world->Chunks[i].Size; j++) {
 
             Block cube = world->Chunks[i].Blocks[j];
 
-            if (cube.ID == 2) {
-                if (!cube.ShadowedFaces.Top && !cube.ShadowedFaces.Bottom && !cube.ShadowedFaces.Left && !cube.ShadowedFaces.Right && !cube.ShadowedFaces.Front && !cube.ShadowedFaces.Back) {
+            if (cube.ID != 0) {
+                SetShaderValue(*Shader, shadowTopLoc, &cube.ShadowedFaces.Top, SHADER_UNIFORM_INT);
+                SetShaderValue(*Shader, shadowBottomLoc, &cube.ShadowedFaces.Bottom, SHADER_UNIFORM_INT);
+                SetShaderValue(*Shader, shadowRightLoc, &cube.ShadowedFaces.Right, SHADER_UNIFORM_INT);
+                SetShaderValue(*Shader, shadowLeftLoc, &cube.ShadowedFaces.Left, SHADER_UNIFORM_INT);
+                SetShaderValue(*Shader, shadowFrontLoc, &cube.ShadowedFaces.Front, SHADER_UNIFORM_INT);
+                SetShaderValue(*Shader, shadowBackLoc, &cube.ShadowedFaces.Back, SHADER_UNIFORM_INT);
+
+                BeginShaderMode(*Shader);
                     DrawCube(cube.Position, 1, 1, 1, GREEN);
-                } else {
-                    EndShaderMode();
-
-                    SetShaderValue(*Shader, shadowLoc, &shadow, SHADER_UNIFORM_INT);
-
-                    BeginShaderMode(*Shader);
-
-                    DrawCube(cube.Position, 1, 1, 1, GREEN);
-
-                    EndShaderMode();
-
-                    SetShaderValue(*Shader, shadowLoc, &unshadow, SHADER_UNIFORM_INT);
-
-                    BeginShaderMode(*Shader);
-
-                }
+                EndShaderMode();
             }
         }
     }
@@ -146,3 +144,29 @@ void IsBlocksShadowed(const World *world, Vector3 lightDir) {
         }
     }
 }
+
+
+/*  else {
+                    EndShaderMode();
+
+                    SetShaderValue(*Shader, shadowLoc, &shadow, SHADER_UNIFORM_INT);
+
+                    BeginShaderMode(*Shader);
+
+                    DrawCube(cube.Position, 1, 1, 1, GREEN);
+
+                    EndShaderMode();
+
+                    SetShaderValue(*Shader, shadowLoc, &unshadow, SHADER_UNIFORM_INT);
+
+                    BeginShaderMode(*Shader);
+
+                }
+                    
+                
+if (!cube.ShadowedFaces.Top && !cube.ShadowedFaces.Bottom && !cube.ShadowedFaces.Left && !cube.ShadowedFaces.Right && !cube.ShadowedFaces.Front && !cube.ShadowedFaces.Back) {
+                    DrawCube(cube.Position, 1, 1, 1, GREEN);
+                }
+                
+                
+*/
