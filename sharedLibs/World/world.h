@@ -16,7 +16,7 @@ typedef  struct {
     int Back;
 } ShadowedFaces;
 
-typedef struct {
+typedef struct Block {
     int ID;
     const char *Name;
     Vector3 Position;

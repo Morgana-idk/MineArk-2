@@ -5,6 +5,8 @@
 #include <raylib.h>
 #include <raymath.h>
 
+Block Air = (Block){-1, "", {}, -1, {}, true, {}};
+
 
 const char *GetBlockNameByID(int ID) {
     static const char names[3][20] = {"Grass", "Dirt"};
@@ -12,6 +14,9 @@ const char *GetBlockNameByID(int ID) {
 }
 
 Block GenerateBlock(int ID, Vector3 Position, int ChunkMom) {
+    AmbientOcclusion AO = (AmbientOcclusion){0};
+
+
     return (Block){
         ID,
         GetBlockNameByID(ID),
@@ -19,7 +24,7 @@ Block GenerateBlock(int ID, Vector3 Position, int ChunkMom) {
         ChunkMom,
         (ShadowedFaces){0},
         false,
-        {0}
+        AO
     };
 }
 
@@ -157,14 +162,10 @@ Block *GetBlockProperties(const World *world, Vector3 Position) {
         }
     }
 
-    static Block Air = (Block){-1, "", {0}, -1, {0}, true};
-
     return &Air;
 }
 
 BlockList GetBlockNeighbors(const World *world, Vector3 Position, bool Corners) {
-    Block *actualBlock = GetBlockProperties(world, Position);
-
     int index = 0;
 
     BlockList neighbors = {0};
