@@ -160,3 +160,36 @@ Block *GetBlockProperties(const World *world, Vector3 Position) {
 
     return &Air;
 }
+
+BlockList GetBlockNeighbors(const World *world, Vector3 Position, bool Corners) {
+    Block *actualBlock = GetBlockProperties(world, Position);
+
+    int index = 0;
+
+    BlockList neighbors = {0};
+
+    for (int x = -1; x < 1; x++) {
+        for (int y = -1; y < 1; y++) {
+            for (int z = -1; z < 1; z++) {
+                
+                if (!Corners && !(
+                    (x == -1 && y == 0 && z == 0) ||
+                    (x == 1 && y == 0 && z == 0) ||
+                    (x == 0 && y == -1 && z == 0) ||
+                    (x == 0 && y == 1 && z == 0) ||
+                    (x == 0 && y == 0 && z == -1) ||
+                    (x == 0 && y == 0 && z == 1)
+                )) {continue;}
+
+                if (Vector3Equals((Vector3){x, y, z}, Position) == 0) {
+                    Block *target = GetBlockProperties(world, Vector3Add(Position, (Vector3){x, y, z}));
+
+                    if (!target->IsAir) neighbors.Blocks[index] = *target;
+
+                    index++;
+                    neighbors.Size++;
+                }
+            }
+        }
+    }
+}

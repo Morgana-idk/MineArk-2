@@ -34,6 +34,14 @@ int main() {
     InitWindow(screenW, screenH, "MineArk 2");
     SetTargetFPS(60);
 
+    Block *a = GetBlockProperties(&world, (Vector3){0, 0, 0});
+    Block *b = GetBlockProperties(&world, (Vector3){0, 1, 0});
+    Block *c = GetBlockProperties(&world, (Vector3){0, 2, 0});
+
+    printf("A: ID=%d, IsAir=%d\n", a->ID, a->IsAir);
+    printf("B: ID=%d, IsAir=%d\n", b->ID, b->IsAir);
+    printf("C: ID=%d, IsAir=%d\n", c->ID, c->IsAir);
+
     AtlasInfo TextureAtlas = LoadResources();
 
     Shader lighthing = LoadShader("shaders/glsl330/lighting.vs", "shaders/glsl330/lighting.fs");

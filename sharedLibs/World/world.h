@@ -27,6 +27,11 @@ typedef struct {
 typedef struct {
     Block *Blocks;
     int Size;
+} BlockList;
+
+typedef struct {
+    Block *Blocks;
+    int Size;
     int ChunkID;
     Vector3 Position;
 } Chunk;
@@ -49,5 +54,7 @@ void DrawWorld(const World *world, Shader *Shader, AtlasInfo *TextureAtlas);
 void IsBlocksShadowed(const World *world, Vector3 lightDir);
 
 Block *GetBlockProperties(const World *world, Vector3 Position);
+
+BlockList GetBlockNeighbors(const World *world, Vector3 Position, bool Corners);
 
 #endif
