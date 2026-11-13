@@ -54,6 +54,8 @@ AtlasInfo LoadResources() {
         UnloadImage(img);
     }
 
+    Atlas.TextureAtlas = LoadTextureFromImage(atlasImagem);
+
     UnloadImage(atlasImagem);
 
     AtlasCarregado = true;

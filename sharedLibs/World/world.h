@@ -36,6 +36,8 @@ typedef struct {
     int Size;
     int ChunkID;
     Vector3 Position;
+
+    Mesh Mesh;
 } Chunk;
 
 typedef struct World {
@@ -58,5 +60,7 @@ void IsBlocksShadowed(const World *world, Vector3 lightDir);
 Block *GetBlockProperties(const World *world, Vector3 Position);
 
 BlockList GetBlockNeighbors(const World *world, Vector3 Position, bool Corners);
+
+
 
 #endif
