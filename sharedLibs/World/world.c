@@ -18,7 +18,8 @@ Block GenerateBlock(int ID, Vector3 Position, int ChunkMom) {
         Position,
         ChunkMom,
         (ShadowedFaces){0},
-        false
+        false,
+        {0}
     };
 }
 
@@ -167,11 +168,12 @@ BlockList GetBlockNeighbors(const World *world, Vector3 Position, bool Corners) 
     int index = 0;
 
     BlockList neighbors = {0};
+    neighbors.Blocks = calloc(30, sizeof(Block));
 
-    for (int x = -1; x < 1; x++) {
-        for (int y = -1; y < 1; y++) {
-            for (int z = -1; z < 1; z++) {
-                
+    for (int x = -1; x <= 1; x++) {
+        for (int y = -1; y <= 1; y++) {
+            for (int z = -1; z <= 1; z++) {
+
                 if (!Corners && !(
                     (x == -1 && y == 0 && z == 0) ||
                     (x == 1 && y == 0 && z == 0) ||
@@ -181,7 +183,7 @@ BlockList GetBlockNeighbors(const World *world, Vector3 Position, bool Corners) 
                     (x == 0 && y == 0 && z == 1)
                 )) {continue;}
 
-                if (Vector3Equals((Vector3){x, y, z}, Position) == 0) {
+                if (Vector3Equals(Vector3Add(Position, (Vector3){x, y, z}), Position) == 0) {
                     Block *target = GetBlockProperties(world, Vector3Add(Position, (Vector3){x, y, z}));
 
                     if (!target->IsAir) neighbors.Blocks[index] = *target;
@@ -192,4 +194,6 @@ BlockList GetBlockNeighbors(const World *world, Vector3 Position, bool Corners) 
             }
         }
     }
+
+    return neighbors;
 }

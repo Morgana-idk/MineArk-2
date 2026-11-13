@@ -1,6 +1,7 @@
 #ifndef WORLD_H
 #define WORLD_H
 
+#include "../Ambientocclusion/ambient.h"
 #include <raylib.h>
 #include <raymath.h>
 #include <stdbool.h>
@@ -22,6 +23,7 @@ typedef struct {
     int chunkMom;
     ShadowedFaces ShadowedFaces;
     bool IsAir;
+    AmbientOcclusion AO;
 } Block;
 
 typedef struct {
