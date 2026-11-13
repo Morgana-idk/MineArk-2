@@ -1,11 +1,11 @@
 #ifndef WORLD_H
 #define WORLD_H
 
-#include "../Ambientocclusion/ambient.h"
 #include <raylib.h>
 #include <raymath.h>
 #include <stdbool.h>
 #include "../Memoria/memoria.h"
+#include "../Ambientocclusion/ambient.h"
 
 typedef  struct {
     int Top;
