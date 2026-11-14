@@ -1,6 +1,7 @@
 #include "memoria.h"
 #include <raylib.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "../World/world.h"
 
 
@@ -39,12 +40,16 @@ AtlasInfo LoadResources() {
             img = GenImageColor(1, 1, WHITE);
         }
 
+        if (img.width > 16 || img.height > 16) {
+            ImageResize(&img, 16, 16);
+        }
+
         posX = (i % (256 / tile)) * tile;
         posY = (i / (256 / tile)) * tile;
 
         ImageDrawImage(&atlasImagem, img, posX, posY, WHITE);
 
-        Atlas.AtlasUVs[i] = (Rectangle){posX, posY, img.width, img.height};
+        Atlas.AtlasUVs[i] = (Rectangle){posX, posY, 16, 16};
 
         Model textureModel = LoadModelFromMesh(GenMeshCube(1, 1, 1));
         textureModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTextureFromImage(img);

@@ -68,6 +68,11 @@ World GenerateWorld(AtlasInfo *Atlas) {
         }
     }
 
+    world.Chunks[0].Blocks[world.Chunks[0].Size] = GenerateBlock(1, (Vector3){0, 2, 0}, 0);
+    world.Chunks[0].Size++;
+    world.Chunks[0].Blocks[world.Chunks[0].Size] = GenerateBlock(1, (Vector3){0, 4, 0}, 0);
+    world.Chunks[0].Size++;
+
     for (int i = 0; i < world.Size; i++) {
         Chunk *chunk = &world.Chunks[i];
 
@@ -78,6 +83,8 @@ World GenerateWorld(AtlasInfo *Atlas) {
 }
 
 void DrawWorld(const World *world, Material *Material) {
+    
+
     for (int i = 0; i < world->Size; i++) {
         DrawMesh(world->Chunks[i].Mesh, *Material, MatrixIdentity());
     }
@@ -211,23 +218,23 @@ void GenerateChunkMesh(Chunk *Chunk, AtlasInfo *Atlas) {
         Vector3 Vertex7 = Vector3Add(block->Position, (Vector3){0.5, -0.5, -0.5}); // X + Y - Z -
 
         Vector3 faceVertices[6][4] = {
-            // UP
-            {Vertex0, Vertex1, Vertex2, Vertex3},
+        // UP
+        {Vertex0, Vertex3, Vertex2, Vertex1},
 
-            // DOWN
-            {Vertex4, Vertex5, Vertex6, Vertex7},
+        // DOWN
+        {Vertex4, Vertex5, Vertex6, Vertex7},
 
-            // FRONT
-            {Vertex0, Vertex1, Vertex4, Vertex5},
+        // FRONT
+        {Vertex0, Vertex1, Vertex5, Vertex4},
 
-            // BACK
-            {Vertex2, Vertex3, Vertex6, Vertex7},
+        // BACK
+        {Vertex2, Vertex3, Vertex7, Vertex6},
 
-            // RIGHT
-            {Vertex0, Vertex3, Vertex4, Vertex7},
+        // RIGHT
+        {Vertex0, Vertex4, Vertex7, Vertex3},
 
-            // LEFT
-            {Vertex1, Vertex2, Vertex5, Vertex6}
+        // LEFT
+        {Vertex1, Vertex2, Vertex6, Vertex5}
         };
 
         Vector3 faceNormals[6] = {

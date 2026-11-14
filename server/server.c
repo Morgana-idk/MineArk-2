@@ -28,11 +28,6 @@ int main() {
 
     const World world = GenerateWorld(&TextureAtlas);
 
-    world.Chunks[0].Blocks[world.Chunks[0].Size] = GenerateBlock(1, (Vector3){0, 2, 0}, 0);
-    world.Chunks[0].Size++;
-    world.Chunks[0].Blocks[world.Chunks[0].Size] = GenerateBlock(1, (Vector3){0, 4, 0}, 0);
-    world.Chunks[0].Size++;
-
     int blocos = 0;
 
     for (int i = 0; i < world.Size; i++) blocos += world.Chunks[i].Size;
