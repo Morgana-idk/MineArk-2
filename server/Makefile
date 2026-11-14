@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -O2
 LDLIBS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 
 TARGET = server
-OBJECTS = server.c ../sharedLibs/World/world.c ../sharedLibs/Memoria/memoria.c
+OBJECTS = server.c ../sharedLibs/World/world.c ../sharedLibs/Memoria/memoria.c ../sharedLibs/Raycast/raycast.c ../sharedLibs/Ambientocclusion/ambient.c
 
 all:$(TARGET)
 
