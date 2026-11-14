@@ -35,6 +35,9 @@ int main() {
 
     AtlasInfo TextureAtlas = LoadResources();
 
+    Material AtlasMaterial = LoadMaterialDefault();
+    AtlasMaterial.maps[MATERIAL_MAP_DIFFUSE].texture = TextureAtlas.TextureAtlas;
+
     const World world = GenerateWorld(&TextureAtlas);
 
     Shader lighthing = LoadShader("shaders/glsl330/lighting.vs", "shaders/glsl330/lighting.fs");
@@ -61,7 +64,7 @@ int main() {
         BeginMode3D(camera);
             UpdateCamera(&camera, CAMERA_FREE);
     
-            DrawWorld(&world, &lighthing, &TextureAtlas);
+            DrawWorld(&world, &lighthing, &TextureAtlas, &AtlasMaterial);
 
             DrawGrid(30, 1);
 

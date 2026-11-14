@@ -54,7 +54,7 @@ Block GenerateBlock(int ID, Vector3 Position, int ChunkMom);
 
 const char *GetBlockNameByID(int ID);
 
-void DrawWorld(const World *world, Shader *Shader, AtlasInfo *TextureAtlas);
+void DrawWorld(const World *world, Shader *Shader, AtlasInfo *TextureAtlas, Material *Material);
 
 void IsBlocksShadowed(const World *world, Vector3 lightDir);
 

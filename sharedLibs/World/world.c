@@ -77,7 +77,7 @@ World GenerateWorld(AtlasInfo *Atlas) {
     return world;
 }
 
-void DrawWorld(const World *world, Shader *Shader, AtlasInfo *TextureAtlas) {
+void DrawWorld(const World *world, Shader *Shader, AtlasInfo *TextureAtlas, Material *Material) {
 
     int shadowTopLoc = GetShaderLocation(*Shader, "shadowTop");
     int shadowBottomLoc = GetShaderLocation(*Shader, "shadowBottom");
@@ -101,7 +101,7 @@ void DrawWorld(const World *world, Shader *Shader, AtlasInfo *TextureAtlas) {
                 SetShaderValue(*Shader, shadowBackLoc, &cube.ShadowedFaces.Back, SHADER_UNIFORM_INT);
 
                 BeginShaderMode(*Shader);
-                    DrawModel(TextureAtlas->Models[cube.ID], cube.Position, 1, WHITE);
+                    DrawMesh(world->Chunks[i].Mesh, *Material, MatrixIdentity());
                 EndShaderMode();
             }
         }
