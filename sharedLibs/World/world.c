@@ -212,3 +212,4 @@ void GenerateChunkMesh(Chunk *Chunk) {
     Chunk->Mesh.normals = calloc(vertexCount * 3, sizeof(float));
     Chunk->Mesh.colors = calloc(vertexCount * 4, sizeof(unsigned char));
     Chunk->Mesh.indices = calloc(indexCount, sizeof(unsigned short));
+}
