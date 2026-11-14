@@ -61,6 +61,6 @@ Block *GetBlockProperties(const World *world, Vector3 Position);
 
 BlockList GetBlockNeighbors(const World *world, Vector3 Position, bool Corners);
 
-
+void GenerateChunkMesh(Chunk *Chunk);
 
 #endif

@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdbool.h>
 #include "world.h"
 #include "../Memoria/memoria.h"
@@ -198,3 +199,16 @@ BlockList GetBlockNeighbors(const World *world, Vector3 Position, bool Corners) 
 
     return neighbors;
 }
+
+void GenerateChunkMesh(Chunk *Chunk) {
+    int vertexCount = Chunk->Size * 24;
+    int indexCount = Chunk->Size * 36;
+
+    Chunk->Mesh.vertexCount = vertexCount;
+    Chunk->Mesh.triangleCount = indexCount / 3;
+
+    Chunk->Mesh.vertices = calloc(vertexCount * 3, sizeof(float));
+    Chunk->Mesh.texcoords = calloc(vertexCount * 2, sizeof(float));
+    Chunk->Mesh.normals = calloc(vertexCount * 3, sizeof(float));
+    Chunk->Mesh.colors = calloc(vertexCount * 4, sizeof(unsigned char));
+    Chunk->Mesh.indices = calloc(indexCount, sizeof(unsigned short));
