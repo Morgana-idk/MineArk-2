@@ -10,18 +10,6 @@
 #define screenW 800
 
 int main() {
-    world.Chunks[0].Blocks[world.Chunks[0].Size] = GenerateBlock(1, (Vector3){0, 2, 0}, 0);
-    world.Chunks[0].Size++;
-    world.Chunks[0].Blocks[world.Chunks[0].Size] = GenerateBlock(1, (Vector3){0, 4, 0}, 0);
-    world.Chunks[0].Size++;
-
-    int blocos = 0;
-
-    for (int i = 0; i < world.Size; i++) blocos += world.Chunks[i].Size;
-    char worldInfo[50];
-
-    snprintf(worldInfo, sizeof(worldInfo), "Worlds: 1\nChunks: %d\nBlocks: %d", world.Size, blocos);
-
     Camera3D camera = {0};
     camera.position = (Vector3){0, 0, 0};
     camera.target = (Vector3){0, 0, 1};
@@ -39,6 +27,18 @@ int main() {
     AtlasMaterial.maps[MATERIAL_MAP_DIFFUSE].texture = TextureAtlas.TextureAtlas;
 
     const World world = GenerateWorld(&TextureAtlas);
+
+    world.Chunks[0].Blocks[world.Chunks[0].Size] = GenerateBlock(1, (Vector3){0, 2, 0}, 0);
+    world.Chunks[0].Size++;
+    world.Chunks[0].Blocks[world.Chunks[0].Size] = GenerateBlock(1, (Vector3){0, 4, 0}, 0);
+    world.Chunks[0].Size++;
+
+    int blocos = 0;
+
+    for (int i = 0; i < world.Size; i++) blocos += world.Chunks[i].Size;
+    char worldInfo[50];
+
+    snprintf(worldInfo, sizeof(worldInfo), "Worlds: 1\nChunks: %d\nBlocks: %d", world.Size, blocos);
 
     Shader lighthing = LoadShader("shaders/glsl330/lighting.vs", "shaders/glsl330/lighting.fs");
 
@@ -64,7 +64,7 @@ int main() {
         BeginMode3D(camera);
             UpdateCamera(&camera, CAMERA_FREE);
     
-            DrawWorld(&world, &lighthing, &TextureAtlas, &AtlasMaterial);
+            DrawWorld(&world,&AtlasMaterial);
 
             DrawGrid(30, 1);
 

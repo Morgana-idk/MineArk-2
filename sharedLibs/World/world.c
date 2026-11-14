@@ -68,7 +68,7 @@ World GenerateWorld(AtlasInfo *Atlas) {
         }
     }
 
-    for (unsigned int i = 0; i < world.Size; i++) {
+    for (int i = 0; i < world.Size; i++) {
         Chunk *chunk = &world.Chunks[i];
 
         GenerateChunkMesh(chunk, Atlas);
@@ -77,41 +77,16 @@ World GenerateWorld(AtlasInfo *Atlas) {
     return world;
 }
 
-void DrawWorld(const World *world, Shader *Shader, AtlasInfo *TextureAtlas, Material *Material) {
-
-    int shadowTopLoc = GetShaderLocation(*Shader, "shadowTop");
-    int shadowBottomLoc = GetShaderLocation(*Shader, "shadowBottom");
-    int shadowRightLoc = GetShaderLocation(*Shader, "shadowRight");
-    int shadowLeftLoc = GetShaderLocation(*Shader, "shadowLeft");
-    int shadowFrontLoc = GetShaderLocation(*Shader, "shadowFront");
-    int shadowBackLoc = GetShaderLocation(*Shader, "shadowBack");
-
-
-    for (unsigned int i = 0; i < world->Size; i++) {
-        for (unsigned int j = 0; j < world->Chunks[i].Size; j++) {
-
-            Block cube = world->Chunks[i].Blocks[j];
-
-            if (!cube.IsAir) {
-                SetShaderValue(*Shader, shadowTopLoc, &cube.ShadowedFaces.Top, SHADER_UNIFORM_INT);
-                SetShaderValue(*Shader, shadowBottomLoc, &cube.ShadowedFaces.Bottom, SHADER_UNIFORM_INT);
-                SetShaderValue(*Shader, shadowRightLoc, &cube.ShadowedFaces.Right, SHADER_UNIFORM_INT);
-                SetShaderValue(*Shader, shadowLeftLoc, &cube.ShadowedFaces.Left, SHADER_UNIFORM_INT);
-                SetShaderValue(*Shader, shadowFrontLoc, &cube.ShadowedFaces.Front, SHADER_UNIFORM_INT);
-                SetShaderValue(*Shader, shadowBackLoc, &cube.ShadowedFaces.Back, SHADER_UNIFORM_INT);
-
-                BeginShaderMode(*Shader);
-                    DrawMesh(world->Chunks[i].Mesh, *Material, MatrixIdentity());
-                EndShaderMode();
-            }
-        }
+void DrawWorld(const World *world, Material *Material) {
+    for (int i = 0; i < world->Size; i++) {
+        DrawMesh(world->Chunks[i].Mesh, *Material, MatrixIdentity());
     }
 
 }
 
 void IsBlocksShadowed(const World *world, Vector3 lightDir) {
-    for (unsigned int k = 0; k < world->Size; k++) {
-        for (unsigned int r = 0; r < world->Chunks[k].Size; r++) {
+    for (int k = 0; k < world->Size; k++) {
+        for (int r = 0; r < world->Chunks[k].Size; r++) {
             Block *actualBlock = &world->Chunks[k].Blocks[r];
             Vector3 actualP = actualBlock->Position;
 
@@ -161,8 +136,8 @@ void IsBlocksShadowed(const World *world, Vector3 lightDir) {
 
 
 Block *GetBlockProperties(const World *world, Vector3 Position) {
-    for (unsigned int i = 0; i < world->Size; i++) {
-        for (unsigned int j = 0; j < world->Chunks[i].Size; j++) {
+    for (int i = 0; i < world->Size; i++) {
+        for (int j = 0; j < world->Chunks[i].Size; j++) {
             if (Vector3Equals(world->Chunks[i].Blocks[j].Position, Position) == 1) {
                 return &world->Chunks[i].Blocks[j];
             }
@@ -220,7 +195,7 @@ void GenerateChunkMesh(Chunk *Chunk, AtlasInfo *Atlas) {
     Chunk->Mesh.indices = calloc(indexCount, sizeof(unsigned short));
 
 
-    for (unsigned int i = 0; i < Chunk->Size; i++) {
+    for (int i = 0; i < Chunk->Size; i++) {
         Block *block = &Chunk->Blocks[i];
 
         // VERTEX ------------------------------
@@ -279,8 +254,8 @@ void GenerateChunkMesh(Chunk *Chunk, AtlasInfo *Atlas) {
         {uMin, vMax}
         };
 
-        for (unsigned int face = 0; face < 6; face++) {
-            for (unsigned int vertex = 0; vertex < 4; vertex++) {
+        for (int face = 0; face < 6; face++) {
+            for (int vertex = 0; vertex < 4; vertex++) {
                 unsigned int vertexIndex = face * 4 + vertex;
                 unsigned int index = (i * 24 + vertexIndex) * 3;
 
@@ -314,7 +289,7 @@ void GenerateChunkMesh(Chunk *Chunk, AtlasInfo *Atlas) {
             0, 2, 3,
         };
 
-        for (unsigned char face = 0;  face < 6; face++) {
+        for (char face = 0;  face < 6; face++) {
             unsigned int firstVertex = i * 24 + face * 4;
 
             for (unsigned int j = 0; j < 6; j++) {
