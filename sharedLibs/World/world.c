@@ -49,7 +49,7 @@ Chunk GenerateChunk(int ID, Vector3 Position, const World *World) {
     return chunk;
 }
 
-World GenerateWorld() {
+World GenerateWorld(AtlasInfo *Atlas) {
     World world = {0};
     world.Chunks = calloc(50, sizeof(Chunk));
     world.Size = 0;
@@ -66,6 +66,12 @@ World GenerateWorld() {
             world.Chunks[world.Size] = GenerateChunk(world.Size, finalPosition, &world);
             world.Size++;
         }
+    }
+
+    for (unsigned int i = 0; i < world.Size; i++) {
+        Chunk *chunk = &world.Chunks[i];
+
+        GenerateChunkMesh(chunk, Atlas);
     }
 
     return world;
@@ -200,7 +206,7 @@ BlockList GetBlockNeighbors(const World *world, Vector3 Position, bool Corners) 
     return neighbors;
 }
 
-void GenerateChunkMesh(Chunk *Chunk) {
+void GenerateChunkMesh(Chunk *Chunk, AtlasInfo *Atlas) {
     int vertexCount = Chunk->Size * 24;
     int indexCount = Chunk->Size * 36;
 
@@ -249,6 +255,30 @@ void GenerateChunkMesh(Chunk *Chunk) {
             {Vertex1, Vertex2, Vertex5, Vertex6}
         };
 
+        Vector3 faceNormals[6] = {
+            {0, 1, 0},   // Up
+            {0, -1, 0},  // DOWN 
+            {0, 0, 1},   // FRONT
+            {0, 0, -1},  // BACK
+            {1, 0, 0},   // RIGHT
+            {-1, 0, 0}   // LEFT
+        };
+
+        Rectangle uv = Atlas->AtlasUVs[block->ID];
+
+        float uMin = uv.x / 256.0f;
+        float vMin = uv.y / 256.0f;
+
+        float uMax = (uv.x + uv.width) / 256.0f;
+        float vMax = (uv.y + uv.height) / 256.0f;
+
+        Vector2 faceUVs[4] = {
+        {uMin, vMin},
+        {uMax, vMin},
+        {uMax, vMax},
+        {uMin, vMax}
+        };
+
         for (unsigned int face = 0; face < 6; face++) {
             for (unsigned int vertex = 0; vertex < 4; vertex++) {
                 unsigned int vertexIndex = face * 4 + vertex;
@@ -257,6 +287,24 @@ void GenerateChunkMesh(Chunk *Chunk) {
                 Chunk->Mesh.vertices[index] = faceVertices[face][vertex].x;
                 Chunk->Mesh.vertices[index + 1] = faceVertices[face][vertex].y;
                 Chunk->Mesh.vertices[index + 2] = faceVertices[face][vertex].z;
+
+                unsigned int uvIndex = (i * 24 + vertexIndex) * 2;
+
+                Chunk->Mesh.texcoords[uvIndex] = faceUVs[vertex].x;
+                Chunk->Mesh.texcoords[uvIndex + 1] = faceUVs[vertex].y;
+
+
+                Chunk->Mesh.normals[index] = faceNormals[face].x;
+                Chunk->Mesh.normals[index + 1] = faceNormals[face].y;
+                Chunk->Mesh.normals[index + 2] = faceNormals[face].z;
+
+                unsigned int colorsIndex = (i * 24 + vertexIndex) * 4;
+
+                Chunk->Mesh.colors[colorsIndex] = 255;
+                Chunk->Mesh.colors[colorsIndex + 1] = 255;
+                Chunk->Mesh.colors[colorsIndex + 2] = 255;
+                Chunk->Mesh.colors[colorsIndex + 3] = 255;
+
             }
         }
 
@@ -273,6 +321,8 @@ void GenerateChunkMesh(Chunk *Chunk) {
                 Chunk->Mesh.indices[i * 36 + face * 6 + j] = firstVertex + faceIndices[j];
             }
         }
-
     }
+
+
+    UploadMesh(&Chunk->Mesh, false);
 }

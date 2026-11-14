@@ -7,7 +7,7 @@
 #include "../Memoria/memoria.h"
 #include "../Ambientocclusion/ambient.h"
 
-typedef  struct {
+typedef struct ShadowedFaces{
     int Top;
     int Bottom;
     int Right;
@@ -26,12 +26,12 @@ typedef struct Block {
     AmbientOcclusion AO;
 } Block;
 
-typedef struct {
+typedef struct BlockList {
     Block *Blocks;
     int Size;
 } BlockList;
 
-typedef struct {
+typedef struct Chunk {
     Block *Blocks;
     int Size;
     int ChunkID;
@@ -46,7 +46,7 @@ typedef struct World {
     int Size;
 } World;
 
-World GenerateWorld();
+World GenerateWorld(AtlasInfo *Atlas);
 
 Chunk GenerateChunk(int ID, Vector3 Position, const World *World);
 
@@ -62,6 +62,6 @@ Block *GetBlockProperties(const World *world, Vector3 Position);
 
 BlockList GetBlockNeighbors(const World *world, Vector3 Position, bool Corners);
 
-void GenerateChunkMesh(Chunk *Chunk);
+void GenerateChunkMesh(Chunk *Chunk, AtlasInfo *Atlas);
 
 #endif
