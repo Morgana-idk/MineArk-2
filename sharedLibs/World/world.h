@@ -38,6 +38,7 @@ typedef struct {
     Vector3 Position;
 
     Mesh Mesh;
+    const World *World;
 } Chunk;
 
 typedef struct World {
@@ -47,7 +48,7 @@ typedef struct World {
 
 World GenerateWorld();
 
-Chunk GenerateChunk(int ID, Vector3 Position);
+Chunk GenerateChunk(int ID, Vector3 Position, const World *World);
 
 Block GenerateBlock(int ID, Vector3 Position, int ChunkMom);
 

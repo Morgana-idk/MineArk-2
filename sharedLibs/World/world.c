@@ -1,4 +1,3 @@
-#include <math.h>
 #include <stdbool.h>
 #include "world.h"
 #include "../Memoria/memoria.h"
@@ -29,12 +28,13 @@ Block GenerateBlock(int ID, Vector3 Position, int ChunkMom) {
     };
 }
 
-Chunk GenerateChunk(int ID, Vector3 Position) {
+Chunk GenerateChunk(int ID, Vector3 Position, const World *World) {
     Chunk chunk = {0};
     chunk.Blocks = calloc(290, sizeof(Block));
     chunk.Size = 0;
     chunk.ChunkID = ID;
     chunk.Position = Position;
+    chunk.World = World;
 
     for (int x = -8; x < 8; x++) {
         for (int z = -8; z < 8; z++) {
@@ -63,7 +63,7 @@ World GenerateWorld() {
                 z * 16
             };
 
-            world.Chunks[world.Size] = GenerateChunk(world.Size, finalPosition);
+            world.Chunks[world.Size] = GenerateChunk(world.Size, finalPosition, &world);
             world.Size++;
         }
     }
@@ -81,8 +81,8 @@ void DrawWorld(const World *world, Shader *Shader, AtlasInfo *TextureAtlas) {
     int shadowBackLoc = GetShaderLocation(*Shader, "shadowBack");
 
 
-    for (int i = 0; i < world->Size; i++) {
-        for (int j = 0; j < world->Chunks[i].Size; j++) {
+    for (unsigned int i = 0; i < world->Size; i++) {
+        for (unsigned int j = 0; j < world->Chunks[i].Size; j++) {
 
             Block cube = world->Chunks[i].Blocks[j];
 
@@ -104,8 +104,8 @@ void DrawWorld(const World *world, Shader *Shader, AtlasInfo *TextureAtlas) {
 }
 
 void IsBlocksShadowed(const World *world, Vector3 lightDir) {
-    for (int k = 0; k < world->Size; k++) {
-        for (int r = 0; r < world->Chunks[k].Size; r++) {
+    for (unsigned int k = 0; k < world->Size; k++) {
+        for (unsigned int r = 0; r < world->Chunks[k].Size; r++) {
             Block *actualBlock = &world->Chunks[k].Blocks[r];
             Vector3 actualP = actualBlock->Position;
 
@@ -155,8 +155,8 @@ void IsBlocksShadowed(const World *world, Vector3 lightDir) {
 
 
 Block *GetBlockProperties(const World *world, Vector3 Position) {
-    for (int i = 0; i < world->Size; i++) {
-        for (int j = 0; j < world->Chunks[i].Size; j++) {
+    for (unsigned int i = 0; i < world->Size; i++) {
+        for (unsigned int j = 0; j < world->Chunks[i].Size; j++) {
             if (Vector3Equals(world->Chunks[i].Blocks[j].Position, Position) == 1) {
                 return &world->Chunks[i].Blocks[j];
             }
@@ -212,4 +212,67 @@ void GenerateChunkMesh(Chunk *Chunk) {
     Chunk->Mesh.normals = calloc(vertexCount * 3, sizeof(float));
     Chunk->Mesh.colors = calloc(vertexCount * 4, sizeof(unsigned char));
     Chunk->Mesh.indices = calloc(indexCount, sizeof(unsigned short));
+
+
+    for (unsigned int i = 0; i < Chunk->Size; i++) {
+        Block *block = &Chunk->Blocks[i];
+
+        // VERTEX ------------------------------
+
+        // UP ^^^^^
+        Vector3 Vertex0 = Vector3Add(block->Position, (Vector3){0.5, 0.5, 0.5}); // X + Y + Z +
+        Vector3 Vertex1 = Vector3Add(block->Position, (Vector3){-0.5, 0.5, 0.5}); // X - Y + Z +
+        Vector3 Vertex2 = Vector3Add(block->Position, (Vector3){-0.5, 0.5, -0.5}); // X - Y + Z -
+        Vector3 Vertex3 = Vector3Add(block->Position, (Vector3){0.5, 0.5, -0.5}); // X + Y + Z -
+        Vector3 Vertex4 = Vector3Add(block->Position, (Vector3){0.5, -0.5, 0.5}); // X + Y - Z +
+        Vector3 Vertex5 = Vector3Add(block->Position, (Vector3){-0.5, -0.5, 0.5}); // X - Y - Z +
+        Vector3 Vertex6 = Vector3Add(block->Position, (Vector3){-0.5, -0.5, -0.5}); // X - Y - Z -
+        Vector3 Vertex7 = Vector3Add(block->Position, (Vector3){0.5, -0.5, -0.5}); // X + Y - Z -
+
+        Vector3 faceVertices[6][4] = {
+            // UP
+            {Vertex0, Vertex1, Vertex2, Vertex3},
+
+            // DOWN
+            {Vertex4, Vertex5, Vertex6, Vertex7},
+
+            // FRONT
+            {Vertex0, Vertex1, Vertex4, Vertex5},
+
+            // BACK
+            {Vertex2, Vertex3, Vertex6, Vertex7},
+
+            // RIGHT
+            {Vertex0, Vertex3, Vertex4, Vertex7},
+
+            // LEFT
+            {Vertex1, Vertex2, Vertex5, Vertex6}
+        };
+
+        for (unsigned int face = 0; face < 6; face++) {
+            for (unsigned int vertex = 0; vertex < 4; vertex++) {
+                unsigned int vertexIndex = face * 4 + vertex;
+                unsigned int index = (i * 24 + vertexIndex) * 3;
+
+                Chunk->Mesh.vertices[index] = faceVertices[face][vertex].x;
+                Chunk->Mesh.vertices[index + 1] = faceVertices[face][vertex].y;
+                Chunk->Mesh.vertices[index + 2] = faceVertices[face][vertex].z;
+            }
+        }
+
+        // INDEX --------------------------------
+        unsigned char faceIndices[6] = {
+            0, 1, 2,
+            0, 2, 3,
+        };
+
+        for (unsigned char face = 0;  face < 6; face++) {
+            unsigned int firstVertex = i * 24 + face * 4;
+
+            for (unsigned int j = 0; j < 6; j++) {
+                Chunk->Mesh.indices[i * 36 + face * 6 + j] = firstVertex + faceIndices[j];
+            }
+        }
+
+    }
 }
