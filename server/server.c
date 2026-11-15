@@ -36,12 +36,9 @@ int main() {
     snprintf(worldInfo, sizeof(worldInfo), "Worlds: 1\nChunks: %d\nBlocks: %d", world.Size, blocos);
 
     Shader lighthing = LoadShader("shaders/glsl330/lighting.vs", "shaders/glsl330/lighting.fs");
-
-    for (int i = 0; i < ACTUAL_TEXTURES; i++) {
-        TextureAtlas.Models[i].materials[0].shader = lighthing;
-    }
-
     Vector3 lightDir = (Vector3){0, 1, 0};
+
+    AtlasMaterial.shader = lighthing;
 
     int lightDirLoc = GetShaderLocation(lighthing, "lightDir");
 

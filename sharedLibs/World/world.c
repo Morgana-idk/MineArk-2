@@ -282,9 +282,9 @@ void GenerateChunkMesh(Chunk *Chunk, AtlasInfo *Atlas) {
 
                 unsigned int colorsIndex = (i * 24 + vertexIndex) * 4;
 
-                Chunk->Mesh.colors[colorsIndex] = 100;
-                Chunk->Mesh.colors[colorsIndex + 1] = 100;
-                Chunk->Mesh.colors[colorsIndex + 2] = 100;
+                Chunk->Mesh.colors[colorsIndex] = 255;
+                Chunk->Mesh.colors[colorsIndex + 1] = 255;
+                Chunk->Mesh.colors[colorsIndex + 2] = 255;
                 Chunk->Mesh.colors[colorsIndex + 3] = 255;
 
             }
